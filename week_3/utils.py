@@ -88,7 +88,7 @@ def gradient_check(network:Module, loss_function:Module, X:np.ndarray, Y:np.ndar
         # Compute gradapprox
         if not hasattr(layer, "W"):
             continue
-        if not hasattr(layer, "W_grad"):
+        if not hasattr(layer, "dW"):
             continue
         shape = layer.W.shape
         # print(shape[0], ',', shape[1])

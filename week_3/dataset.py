@@ -1,27 +1,35 @@
 import numpy as np
 import plotly.express as px
 
-def dataset_Circles(m=1000, radius=0.7, noise=0.0):
-    X = np.zeros((m, 2, 1))
-    Y = np.zeros((m, 1, 1))
+def dataset_Circles(m=10, radius=0.7, noise=0.0, verbose=False):
 
-    for currentN in range(m):
-        i, j = 2 * np.random.rand(2) - 1
+    # Hodnoty X budu v intervale <-1; 1>
+    X = (np.random.rand(2, m) * 2.0) - 1.0
+    if (verbose): print('X: \n', X, '\n')
 
-        r = np.sqrt(i ** 2 + j ** 2)
-        if (noise > 0.0):
-            r += np.random.rand() * noise
+    # Element-wise nasobenie nahodnym sumom
+    N = (np.random.rand(2, m)-0.5) * noise
+    if (verbose): print('N: \n', N, '\n')
+    Xnoise = X + N
+    if (verbose): print('Xnoise: \n', Xnoise, '\n')
 
-        if (r < radius):
-            l = 0
-        else:
-            l = 1
+    # Spocitame polomer
+    # Element-wise druha mocnina
+    XSquare = Xnoise ** 2
+    if (verbose): print('XSquare: \n', XSquare, '\n')
 
-        X[currentN, 0] = [i]
-        X[currentN, 1] = [j]
-        Y[currentN] = [[float(l)]]
+    # Spocitame podla prvej osi. Ziskame (1, m) array.
+    RSquare = np.sum(XSquare, axis=0, keepdims=True)
+    if (verbose): print('RSquare: \n', RSquare, '\n')
+    R = np.sqrt(RSquare)
+    if (verbose): print('R: \n', R, '\n')
 
-    return np.asarray(X), np.asarray(Y)
+    # Y bude 1, ak je polomer vacsi ako argument radius
+    Y = (R > radius).astype(float)
+    if (verbose): print('Y: \n', Y, '\n')
+
+    # Vratime X, Y
+    return X, Y
 
 def draw_dataset(x, y):
     if x.shape[0] == 2:
