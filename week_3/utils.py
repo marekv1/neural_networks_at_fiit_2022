@@ -113,7 +113,7 @@ def gradient_check(network:Module, loss_function:Module, X:np.ndarray, Y:np.ndar
                 # print(layer.name, layer.dW.shape)
                 # grad = np.mean(layer.dW, axis=0, keepdims=True)
                 # grad_backward.append(grad[0][i][j])
-                grad_backward.append(layer.W_grad[i][j])
+                grad_backward.append(layer.dW[i][j])
                 layer.W[i][j] = origin_W
 
     # Compare gradapprox to backward propagation gradients by computing difference.
